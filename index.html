@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AllVora | Advanced Enterprise Solutions</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-deep: #020617;
+            --primary: #6366f1;
+            --secondary: #22d3ee;
+            --text-white: #ffffff;
+            --text-soft: #f8fafc;
+            --text-dim: #cbd5e1;
+            --glass: rgba(15, 23, 42, 0.9);
+            --border: rgba(255, 255, 255, 0.2);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-soft);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* --- BACKGROUND DECORATION --- */
+        .blob {
+            position: fixed;
+            width: 45vw; height: 45vw;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+            z-index: -1; filter: blur(100px); pointer-events: none;
+        }
+
+        /* --- NAVBAR & CUSTOM HAMBURGER --- */
+        .navbar {
+            padding: 20px 0;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 2000;
+        }
+        .navbar.scrolled {
+            background: rgba(2, 6, 23, 0.98);
+            backdrop-filter: blur(20px);
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .navbar-brand { font-weight: 800; font-size: 1.8rem; color: #fff !important; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        .navbar-brand span { color: var(--secondary); }
+        
+        .nav-link { 
+            color: var(--text-white) !important; 
+            font-weight: 700; 
+            margin-left: 30px; 
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+            transition: 0.3s;
+        }
+        .nav-link:hover { color: var(--secondary) !important; }
+
+        /* Custom Hamburger Styling */
+        .navbar-toggler {
+            border: none;
+            padding: 0;
+            width: 30px;
+            height: 20px;
+            position: relative;
+            transition: .5s ease-in-out;
+            cursor: pointer;
+        }
+        .navbar-toggler:focus { box-shadow: none; }
+        .navbar-toggler span {
+            display: block;
+            position: absolute;
+            height: 3px;
+            width: 100%;
+            background: var(--secondary);
+            border-radius: 9px;
+            opacity: 1;
+            left: 0;
+            transform: rotate(0deg);
+            transition: .25s ease-in-out;
+        }
+        .navbar-toggler span:nth-child(1) { top: 0px; }
+        .navbar-toggler span:nth-child(2) { top: 8px; }
+        .navbar-toggler span:nth-child(3) { top: 16px; }
+
+        .navbar-toggler.open span:nth-child(1) { top: 8px; transform: rotate(135deg); }
+        .navbar-toggler.open span:nth-child(2) { opacity: 0; left: -60px; }
+        .navbar-toggler.open span:nth-child(3) { top: 8px; transform: rotate(-135deg); }
+
+        /* --- STACKING PANELS --- */
+        .panel {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background: var(--bg-deep);
+            border-top: 1px solid var(--border);
+            position: relative;
+            padding: 100px 0;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero-title {
+            font-size: clamp(2.8rem, 8vw, 5.8rem);
+            font-weight: 800;
+            line-height: 1.1;
+            color: var(--text-white);
+            text-shadow: 0 10px 40px rgba(0,0,0,0.6);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* --- BENTO UI --- */
+        .bento-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 40px;
+            height: 100%;
+            transition: 0.4s ease;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        .bento-card:hover {
+            border-color: var(--secondary);
+            transform: translateY(-10px);
+            background: rgba(30, 41, 59, 1);
+        }
+        .bento-card h3 { color: var(--text-white); font-weight: 800; margin-bottom: 20px; text-shadow: 0 2px 5px rgba(0,0,0,0.4); }
+        .bento-card p { color: var(--text-soft); font-size: 1.1rem; font-weight: 500; }
+
+        /* --- BUTTONS --- */
+        .btn-premium {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #000;
+            padding: 18px 45px;
+            border-radius: 100px;
+            font-weight: 800;
+            text-decoration: none;
+            display: inline-block;
+            transition: 0.3s;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+            border: none;
+        }
+        .btn-premium:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(34, 211, 238, 0.5);
+            color: #000;
+        }
+
+        /* --- CONTACT FORM --- */
+        .form-control {
+            background: rgba(255, 255, 255, 0.1) !important;
+            border: 1px solid var(--border) !important;
+            color: #fff !important;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        .form-control::placeholder { color: #cbd5e1; }
+        .form-control:focus {
+            border-color: var(--secondary) !important;
+            box-shadow: 0 0 15px rgba(34, 211, 238, 0.3) !important;
+        }
+
+        footer {
+            background: #010409;
+            padding: 80px 0 40px;
+            border-top: 1px solid var(--border);
+            position: relative;
+            z-index: 100;
+        }
+
+        /* --- MOBILE ADAPTATION --- */
+        @media (max-width: 991px) {
+            .navbar-collapse {
+                background: var(--bg-deep);
+                padding: 30px;
+                border-radius: 25px;
+                margin-top: 20px;
+                border: 1px solid var(--border);
+                box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            }
+            .nav-link { margin: 15px 0; font-size: 1.2rem; text-align: center; }
+            .hero-title { font-size: 2.8rem; line-height: 1.2; }
+            .panel { padding: 80px 0; min-height: auto; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="blob" style="top: -5%; right: -5%;"></div>
+<div class="blob" style="bottom: 5%; left: -5%;"></div>
+
+<nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container d-flex justify-content-between align-items-center">
+        <a class="navbar-brand" href="#">ALL<span>VORA</span></a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" id="nav-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-lg-center">
+                <li><a class="nav-link" href="#home">Home</a></li>
+                <li><a class="nav-link" href="#expertise">Expertise</a></li>
+                <li><a class="nav-link" href="#portfolio">Portfolio</a></li>
+                <li><a class="nav-link" href="#contact">Contact</a></li>
+                <li class="ms-lg-4 mt-4 mt-lg-0"><a href="#contact" class="btn-premium px-5 py-2">Start Project</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div id="main-content">
+    <section id="home" class="panel">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10">
+                    <h1 class="hero-title">Engineering <span class="gradient-text">Scalable Solutions</span> for the Modern Enterprise.</h1>
+                    <p class="fs-4 mt-4 mb-5 text-white fw-bold" style="text-shadow: 0 2px 10px rgba(0,0,0,0.6);">
+                        Specializing in MERN Stack, FastAPI systems, and Cyber Security. We architect digital assets that drive global innovation.
+                    </p>
+                    <div class="d-flex flex-wrap gap-4">
+                        <a href="#contact" class="btn-premium">Partner with AllVora</a>
+                        <a href="#expertise" class="btn-outline-light rounded-pill px-5 py-3 text-decoration-none fw-bold">Our DNA</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="expertise" class="panel">
+        <div class="container py-5">
+            <div class="row mb-5">
+                <div class="col-12">
+                    <h2 class="display-3 fw-bold text-white mb-3">Core <span class="gradient-text">DNA</span></h2>
+                    <p class="fs-5 text-dim fw-bold">Architecture. Security. Performance.</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="bento-card">
+                        <i class="fas fa-layer-group fa-3x mb-4 text-secondary"></i>
+                        <h3>MERN Stack</h3>
+                        <p>End-to-end development of robust web applications using MongoDB, Express, React, and Node.js. Optimized for 99.9% uptime.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="bento-card">
+                        <i class="fas fa-bolt fa-3x mb-4 text-secondary"></i>
+                        <h3>FastAPI Systems</h3>
+                        <p>High-speed Python backends designed for massive concurrency and complex asynchronous data processing.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12">
+                    <div class="bento-card">
+                        <i class="fas fa-user-shield fa-3x mb-4 text-secondary"></i>
+                        <h3>Cyber Security</h3>
+                        <p>Integrated security layers including JWT, OAuth2, and rigorous penetration testing to protect every deployment.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+
+    <section id="portfolio" class="panel">
+        <div class="container py-5">
+            <div class="row mb-5 text-lg-end">
+                <div class="col-12">
+                    <h2 class="display-3 fw-bold text-white">Live <span class="gradient-text">Deployments</span></h2>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="bento-card">
+                        <h4 class="text-secondary fw-bold mb-3">StockWatcher Engine</h4>
+                        <p>A real-time financial monitor built with FastAPI. Sub-second market alerts with millisecond latency via JWT-secured pipelines.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="bento-card">
+                        <h4 class="text-secondary fw-bold mb-3">CampusLink Social</h4>
+                        <p>High-engagement social ecosystem for universities using MERN stack and Socket.io for seamless real-time interaction.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="panel">
+        <div class="container">
+            <div class="bento-card" style="border-color: var(--primary);">
+                <div class="row g-5 align-items-center">
+                    <div class="col-lg-5">
+                        <h2 class="display-5 fw-bold text-white mb-4">Let's build your <span class="text-secondary">Future.</span></h2>
+                        <p class="text-dim mb-4 fw-bold">Consult with our lead architects today. We respond within 12 hours.</p>
+                        <div class="d-flex align-items-center mb-3"><i class="fas fa-envelope text-secondary me-3"></i> contact@allvora.com</div>
+                        <div class="d-flex align-items-center"><i class="fas fa-location-dot text-secondary me-3"></i> Gujarat, India</div>
+                    </div>
+                    <div class="col-lg-7">
+                        <form action="https://api.web3forms.com/submit" method="POST">
+                            <input type="hidden" name="access_key" value="5b2af4dc-cd01-4b6e-a052-e8fe0e9153ff">
+                            <div class="row">
+                                <div class="col-md-6"><input type="text" name="name" class="form-control" placeholder="Full Name" required></div>
+                                <div class="col-md-6"><input type="email" name="email" class="form-control" placeholder="Email" required></div>
+                            </div>
+                            <input type="text" name="subject" class="form-control" placeholder="Project Type (e.g. Fintech / SaaS)">
+                            <textarea name="message" class="form-control" rows="5" placeholder="Tell us about your technical requirements..." required></textarea>
+                            <input type="hidden" name="from_name" value="AllVora Inquiry">
+                            <button type="submit" class="btn-premium w-100">Deploy Request</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<footer>
+    <div class="container text-center">
+        <h3 class="navbar-brand">ALL<span>VORA</span></h3>
+        <p class="text-dim mt-4 fw-bold">Scaling Innovation via Architecture, Security, and Precision.</p>
+        <div class="d-flex justify-content-center gap-4 mt-5 mb-5">
+            <a href="#" class="text-white fs-4"><i class="fab fa-linkedin"></i></a>
+            <a href="#" class="text-white fs-4"><i class="fab fa-github"></i></a>
+            <a href="#" class="text-white fs-4"><i class="fab fa-x-twitter"></i></a>
+        </div>
+        <p class="text-dim small mb-0 fw-bold">© 2026 AllVora Web Solutions. All Rights Reserved.</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+<script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Navbar scroll effect
+    window.addEventListener("scroll", () => {
+        document.querySelector(".navbar").classList.toggle("scrolled", window.scrollY > 50);
+    });
+
+    // Custom Hamburger Toggle
+    const navIcon = document.getElementById('nav-icon');
+    navIcon.addEventListener('click', () => {
+        navIcon.classList.toggle('open');
+    });
+
+    // Close menu on link click (Mobile)
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+            if(window.innerWidth < 992) {
+                document.querySelector('.navbar-collapse').classList.remove('show');
+                navIcon.classList.remove('open');
+            }
+        });
+    });
+
+    // --- GSAP ENGINE ---
+    let mm = gsap.matchMedia();
+
+    mm.add("(min-width: 992px)", () => {
+        const panels = gsap.utils.toArray(".panel");
+        panels.forEach((panel, i) => {
+            ScrollTrigger.create({
+                trigger: panel,
+                start: "top top",
+                pin: true,
+                pinSpacing: false,
+                snap: i === panels.length - 1 ? 0 : 1
+            });
+            gsap.from(panel.querySelector(".container"), {
+                opacity: 0,
+                y: 100,
+                duration: 1.2,
+                scrollTrigger: {
+                    trigger: panel,
+                    start: "top 60%",
+                    toggleActions: "play none none reverse"
+                }
+            });
+        });
+    });
+
+    mm.add("(max-width: 991px)", () => {
+        gsap.utils.toArray(".panel").forEach(panel => {
+            gsap.from(panel.querySelector(".container"), {
+                opacity: 0,
+                y: 50,
+                duration: 1,
+                scrollTrigger: {
+                    trigger: panel,
+                    start: "top 80%",
+                    toggleActions: "play none none none"
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
